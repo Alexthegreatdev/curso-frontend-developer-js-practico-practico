@@ -4,8 +4,10 @@ const burgerMenu = document.querySelector('.menu');
 const mobileMenu = document.querySelector('.mobile-menu');
 const menuCarritoIcon = document.querySelector('.navbar-shopping-cart');
 const shoppingCartContainer = document.querySelector('#shoppingCartContainer');
+const productDetailContainer = document.querySelector('#productDetail');
 const cardsContainer = document.querySelector('.cards-container');
 const bodyModal = document.querySelector('body');
+const productDetailClose = document.querySelector('.product-detail-close');
 
 menuEmail.addEventListener('click', () => {
     toggleClass(desktopMenu);
@@ -16,7 +18,11 @@ burgerMenu.addEventListener('click', () => {
 menuCarritoIcon.addEventListener('click', () => {
     toggleClass(shoppingCartContainer);
 });
+productDetailClose.addEventListener('click', closeProductDetailAside);
 
+function closeProductDetailAside() {
+    productDetailContainer.classList.add('inactive')
+};
 
 /* function toggleDesktopMenu() {
     desktopMenu.classList.toggle('inactive');
@@ -33,7 +39,10 @@ function toggleMobileMenu() {
 
 /* Mi solucion para que solo se pueda abrir uno */
 function toggleClass(openElement) {
-    let inactiveItems = [desktopMenu, mobileMenu, shoppingCartContainer];
+    let inactiveItems = [desktopMenu, mobileMenu, shoppingCartContainer, productDetailContainer];
+        if (openElement == productDetailContainer && !productDetailContainer.classList.contains('inactive')) {
+            return
+        }
         for (const item of inactiveItems) {
             if (item != openElement  && !item.classList.contains('inactive')) {
                 item.classList.toggle('inactive');
@@ -41,8 +50,9 @@ function toggleClass(openElement) {
         }
    /*  bodyModal.classList.toggle('body-overflow'); */ /* test */
     openElement.classList.toggle('inactive');
-    
 }
+
+
 
 const productList = [];
 productList.push({
@@ -104,6 +114,9 @@ function renderProducts(arr) {
       // product= {name, price, image} -> product.image
       const productImg = document.createElement('img');
       productImg.setAttribute('src', product.img);
+      productImg.addEventListener('click', () => {
+        toggleClass(productDetailContainer);
+      });
     
       const productInfo = document.createElement('div');
       productInfo.classList.add('product-info');
